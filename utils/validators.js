@@ -8,6 +8,7 @@ const userSchema = Joi.object({
   birthday: Joi.date().iso().required(),
   height: Joi.number().positive().required(),
   weight: Joi.number().positive().required(),
+  jenisKelamin: Joi.string().valid("Laki-laki", "Perempuan").required(),
 });
 
 module.exports = { userSchema };

@@ -2,10 +2,19 @@ const bcrypt = require("bcryptjs");
 const jwt = require("@hapi/jwt");
 const users = require("../models/userModel");
 const { userSchema } = require("../utils/validators");
+require("dotenv").config(); // Memuat variabel lingkungan dari .env file
 
 const register = async (request, h) => {
-  const { username, password, email, name, birthday, height, weight } =
-    request.payload;
+  const {
+    username,
+    password,
+    email,
+    name,
+    birthday,
+    height,
+    weight,
+    jenisKelamin,
+  } = request.payload;
 
   // Validasi input
   const { error } = userSchema.validate({
@@ -16,6 +25,7 @@ const register = async (request, h) => {
     birthday,
     height,
     weight,
+    jenisKelamin,
   });
   if (error) {
     return h.response({ error: error.details[0].message }).code(400);
@@ -42,13 +52,16 @@ const register = async (request, h) => {
     birthday,
     height,
     weight,
+    jenisKelamin,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
   users.push(newUser);
 
   // Buat JWT
   const token = jwt.token.generate(
     { aud: "urn:audience:test", iss: "urn:issuer:test", user: newUser.id },
-    { key: "your_secret_key", algorithm: "HS256" }
+    { key: process.env.JWT_SECRET, algorithm: "HS256" }
   );
 
   return h
@@ -63,6 +76,9 @@ const register = async (request, h) => {
         birthday: newUser.birthday,
         height: newUser.height,
         weight: newUser.weight,
+        jenisKelamin: newUser.jenisKelamin,
+        createdAt: newUser.createdAt,
+        updatedAt: newUser.updatedAt,
       },
     })
     .code(201);
@@ -89,13 +105,13 @@ const login = async (request, h) => {
     return h.response({ error: "Invalid username or password" }).code(400);
   }
 
+  // Update updatedAt
+  user.updatedAt = new Date().toISOString();
+
   // Buat JWT
   const token = jwt.token.generate(
     { aud: "urn:audience:test", iss: "urn:issuer:test", user: user.id },
-    {
-      key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-      algorithm: "HS256",
-    }
+    { key: process.env.JWT_SECRET, algorithm: "HS256" }
   );
 
   return h
@@ -110,6 +126,9 @@ const login = async (request, h) => {
         birthday: user.birthday,
         height: user.height,
         weight: user.weight,
+        jenisKelamin: user.jenisKelamin,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     })
     .code(200);

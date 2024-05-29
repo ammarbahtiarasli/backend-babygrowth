@@ -1,6 +1,7 @@
 const Hapi = require("@hapi/hapi");
 const Jwt = require("@hapi/jwt");
 const authRoutes = require("./routes/authRoutes");
+require("dotenv").config(); // Memuat variabel lingkungan dari .env file
 
 const init = async () => {
   const server = Hapi.server({
@@ -13,7 +14,7 @@ const init = async () => {
 
   // Deklarasi strategi autentikasi
   server.auth.strategy("jwt", "jwt", {
-    keys: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    keys: process.env.JWT_SECRET, // Menggunakan kunci rahasia dari variabel lingkungan
     verify: {
       aud: "urn:audience:test",
       iss: "urn:issuer:test",
@@ -31,6 +32,18 @@ const init = async () => {
 
   // Register routes
   server.route(authRoutes);
+
+  // Contoh route yang dilindungi
+  server.route({
+    method: "GET",
+    path: "/protected-endpoint",
+    options: {
+      auth: "jwt",
+    },
+    handler: (request, h) => {
+      return { message: "You have access to this protected endpoint!" };
+    },
+  });
 
   await server.start();
   console.log("Server running on %s", server.info.uri);
