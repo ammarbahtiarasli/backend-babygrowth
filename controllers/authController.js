@@ -1,27 +1,22 @@
+require("dotenv").config(); // Memuat variabel lingkungan dari .env file
 const bcrypt = require("bcryptjs");
 const jwt = require("@hapi/jwt");
 const users = require("../models/userModel");
-const { userSchema } = require("../utils/validators");
-require("dotenv").config(); // Memuat variabel lingkungan dari .env file
+const {
+  userSchema,
+  registerSchema,
+  loginSchema,
+} = require("../utils/validators");
 
 const register = async (request, h) => {
-  const {
+  const { username, password, email, name } = request.payload;
+
+  // Validasi input pendaftaran
+  const { error } = registerSchema.validate({
     username,
+    name,
     password,
     email,
-    name,
-    birthday,
-    height,
-    weight,
-    jenisKelamin,
-  } = request.payload;
-
-  // Validasi input
-  const { error } = userSchema.validate({
-    username,
-    name,
-    password,
-    email
   });
   if (error) {
     return h.response({ error: error.details[0].message }).code(400);
@@ -45,10 +40,10 @@ const register = async (request, h) => {
     password: hashedPassword,
     email,
     name,
-    birthday,
-    height,
-    weight,
-    jenisKelamin,
+    birthday: null,
+    height: null,
+    weight: null,
+    jenisKelamin: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -69,10 +64,6 @@ const register = async (request, h) => {
         name: newUser.name,
         username: newUser.username,
         email: newUser.email,
-        birthday: newUser.birthday,
-        height: newUser.height,
-        weight: newUser.weight,
-        jenisKelamin: newUser.jenisKelamin,
         createdAt: newUser.createdAt,
         updatedAt: newUser.updatedAt,
       },
@@ -80,11 +71,13 @@ const register = async (request, h) => {
     .code(201);
 };
 
+// Login dan editProfile tetap sama seperti sebelumnya
+
 const login = async (request, h) => {
   const { email, password } = request.payload;
 
-  // Validasi input
-  const { error } = userSchema.validate({ email, password });
+  // Validasi input login
+  const { error } = loginSchema.validate({ email, password });
   if (error) {
     return h.response({ error: error.details[0].message }).code(400);
   }
@@ -127,8 +120,46 @@ const login = async (request, h) => {
 };
 
 const logout = async (request, h) => {
-    return h.response({ message: "Logout successful" }).code(200);
-}
+  return h.response({ message: "Logout successful" }).code(200);
+};
 
+// editProfile tetap sama seperti sebelumnya
 
-module.exports = { register, login, logout };
+const editProfile = async (request, h) => {
+  const { id } = request.auth.credentials;
+  const { name, birthday, height, weight, jenisKelamin } = request.payload;
+
+  // Cari pengguna
+  const user = users.find((user) => user.id === id);
+  if (!user) {
+    return h.response({ error: "User not found" }).code(404);
+  }
+
+  // Edit data pengguna
+  user.name = name || user.name;
+  user.birthday = birthday || user.birthday;
+  user.height = height || user.height;
+  user.weight = weight || user.weight;
+  user.jenisKelamin = jenisKelamin || user.jenisKelamin;
+  user.updatedAt = new Date().toISOString();
+
+  return h
+    .response({
+      message: "User profile updated successfully",
+      updatedProfile: {
+        userID: user.id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        birthday: user.birthday,
+        height: user.height,
+        weight: user.weight,
+        jenisKelamin: user.jenisKelamin,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    })
+    .code(200);
+};
+
+module.exports = { register, login, logout, editProfile };
