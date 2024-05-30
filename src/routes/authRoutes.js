@@ -1,4 +1,4 @@
-const authHandler = require("./authHandler");
+const authHandler = require("../handlers/authHandler");
 
 const authRoutes = [
   {
@@ -17,16 +17,11 @@ const authRoutes = [
     },
     handler: authHandler.register,
   },
-  // {
-  //   method: "GET",
-  //   path: "/profile",
-  //   handler: authHandler.profile,
-  // },
-  // {
-  //   method: "POST",
-  //   path: "/logout",
-  //   handler: authHandler.logout,
-  // },
+//   {
+//     method: "GET",
+//     path: "/profile",
+//     handler: authHandler.profile,
+//   }
 ];
 
-module.exports = { authRoutes };
+module.exports = authRoutes;
