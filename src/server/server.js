@@ -1,7 +1,7 @@
 require("dotenv").config(); // Memuat variabel lingkungan dari .env file
 const Hapi = require("@hapi/hapi");
 const Jwt = require("@hapi/jwt");
-const authRoutes = require("./routes/authRoutes");
+const authRoutes = require("../auth/authRoutes");
 
 const init = async () => {
   const server = Hapi.server({

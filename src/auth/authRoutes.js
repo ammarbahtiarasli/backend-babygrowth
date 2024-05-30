@@ -1,38 +1,32 @@
-const { options } = require("joi")
-const authController = require("../controllers/authController")
+const authHandler = require("./authHandler");
 
 const authRoutes = [
-    {
-        method: "POST",
-        path: "/register",
-        options: {
-            auth: false,
-        },
-        handler: authController.register,
+  {
+    method: "POST",
+    path: "/login",
+    options: {
+      auth: false,
     },
-    {
-        method: "POST",
-        path: "/login",
-        options: {
-            auth: false,
-        },
-        handler: authController.login,
+    handler: authHandler.login,
+  },
+  {
+    method: "POST",
+    path: "/register",
+    options: {
+      auth: false,
     },
-    {
-        method: "PUT",
-        path: "/profile/edit",
-        handler: authController.edit,
-    },
-    {
-        method: "GET",
-        path: "/profile/{id}",
-        handler: authController.show,
-    },
-    {
-        method: "POST",
-        path: "/logout",
-        handler: authController.logout,
-    },
-]
+    handler: authHandler.register,
+  },
+  // {
+  //   method: "GET",
+  //   path: "/profile",
+  //   handler: authHandler.profile,
+  // },
+  // {
+  //   method: "POST",
+  //   path: "/logout",
+  //   handler: authHandler.logout,
+  // },
+];
 
-module.exports = authRoutes
+module.exports = { authRoutes };
