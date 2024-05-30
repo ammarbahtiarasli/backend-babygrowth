@@ -19,13 +19,9 @@ const register = async (request, h) => {
   // Validasi input
   const { error } = userSchema.validate({
     username,
-    password,
-    email,
     name,
-    birthday,
-    height,
-    weight,
-    jenisKelamin,
+    password,
+    email
   });
   if (error) {
     return h.response({ error: error.details[0].message }).code(400);
@@ -68,9 +64,9 @@ const register = async (request, h) => {
     .response({
       message: "User registered successfully",
       loginResult: {
+        token,
         userID: newUser.id,
         name: newUser.name,
-        token,
         username: newUser.username,
         email: newUser.email,
         birthday: newUser.birthday,
@@ -85,24 +81,24 @@ const register = async (request, h) => {
 };
 
 const login = async (request, h) => {
-  const { username, password } = request.payload;
+  const { email, password } = request.payload;
 
   // Validasi input
-  const { error } = userSchema.validate({ username, password });
+  const { error } = userSchema.validate({ email, password });
   if (error) {
     return h.response({ error: error.details[0].message }).code(400);
   }
 
   // Cari pengguna
-  const user = users.find((user) => user.username === username);
+  const user = users.find((user) => user.email === email);
   if (!user) {
-    return h.response({ error: "Invalid username or password" }).code(400);
+    return h.response({ error: "Invalid email or password" }).code(400);
   }
 
   // Verifikasi password
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return h.response({ error: "Invalid username or password" }).code(400);
+    return h.response({ error: "Invalid email or password" }).code(400);
   }
 
   // Update updatedAt
@@ -123,10 +119,6 @@ const login = async (request, h) => {
         token,
         username: user.username,
         email: user.email,
-        birthday: user.birthday,
-        height: user.height,
-        weight: user.weight,
-        jenisKelamin: user.jenisKelamin,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
@@ -134,4 +126,9 @@ const login = async (request, h) => {
     .code(200);
 };
 
-module.exports = { register, login };
+const logout = async (request, h) => {
+    return h.response({ message: "Logout successful" }).code(200);
+}
+
+
+module.exports = { register, login, logout };
