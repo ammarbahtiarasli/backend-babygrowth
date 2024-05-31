@@ -17,11 +17,22 @@ const authRoutes = [
     },
     handler: authHandler.register,
   },
-//   {
-//     method: "GET",
-//     path: "/profile",
-//     handler: authHandler.profile,
-//   }
+  {
+    method: "GET",
+    path: "/profile",
+    options: {
+        auth : "jwt"
+    },
+    handler: authHandler.profile,
+  },
+  {
+    method: "POST",
+    path: "/profile",
+    options: {
+        auth : "jwt"
+    },
+    handler: authHandler.postProfile,
+  }
 ];
 
 module.exports = authRoutes;
