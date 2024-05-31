@@ -85,3 +85,40 @@ http://localhost:3000
     }
 }
 ```
+
+### Profile
+
+- URL
+
+`/profile`
+
+- Method
+
+ `GET`
+
+- Request Body
+
+`none`
+
+ use token JWT.
+
+- Response
+
+```json
+{
+   "status": "success",
+    "message": "User Profile",
+    "data": {
+        "id": "5e5b4add-351d-4c11-9622-819a958f9a96",
+        "username": "lanang",
+        "email": "lanang@gmail.com",
+        "name": null,
+        "birthday": null,
+        "height": null,
+        "weight": null,
+        "gender": null,
+        "createdAt": "2024-05-31T10:08:52.381Z",
+        "updatedAt": "2024-05-31T10:08:52.381Z",
+    }
+}
+```
