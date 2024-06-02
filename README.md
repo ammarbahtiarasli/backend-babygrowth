@@ -135,11 +135,15 @@ http://localhost:3000
 
 - Request Body
 
-`username` as `string`, must be unique
+`name` as `string`, must be unique
 
-`email` as `string`, must be unique
+`birthday` as `date`,
 
-`password` as `string`, must be at least 8 characters
+`height` as `number`,
+
+`weight` as `number`,
+
+`gender` as `string`,
 
 - Response
 
