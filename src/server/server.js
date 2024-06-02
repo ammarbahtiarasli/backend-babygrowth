@@ -7,8 +7,13 @@ const fs_users = require("../services/firestore")
 
 const init = async () => {
     const server = Hapi.server({
-        port: 3000,
-        host: "localhost",
+        port: process.env.PORT || 3000,
+        host: process.env.HOST || "localhost",
+        routes: {
+            cors: {
+                origin: ["*"],
+            },
+        }
     })
 
     // Register plugin JWT
@@ -28,25 +33,25 @@ const init = async () => {
         },
         validate: async (artifacts, request, h) => {
             try {
-                const decoded = await verifyToken(artifacts.token); // Menunggu hasil verifikasi token
+                const decoded = await verifyToken(artifacts.token) // Menunggu hasil verifikasi token
                 if (!decoded) {
-                    return { isValid: false };
+                    return { isValid: false }
                 }
 
                 const userSnapshot = await fs_users
                     .collection("users")
                     .doc(artifacts.decoded.payload.id)
-                    .get();
+                    .get()
                 if (!userSnapshot.exists) {
-                    return { isValid: false };
+                    return { isValid: false }
                 }
 
-                return { isValid: true, credentials: { user: userSnapshot.data() } };
+                return { isValid: true, credentials: { user: userSnapshot.data() } }
             } catch (err) {
-                return { isValid: false };
+                return { isValid: false }
             }
         },
-    });
+    })
 
 
     server.auth.default("jwt")
