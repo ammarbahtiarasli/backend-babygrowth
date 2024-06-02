@@ -122,3 +122,38 @@ http://localhost:3000
     }
 }
 ```
+
+### Edit Profile
+
+- URL
+
+`/profile`
+
+- Method
+
+ `POST`
+
+- Request Body
+
+`username` as `string`, must be unique
+
+`email` as `string`, must be unique
+
+`password` as `string`, must be at least 8 characters
+
+- Response
+
+```json
+{
+    "status": "success",
+    "message": "User profile updated",
+    "data": {
+        "name": "ripan banget",
+        "birthday": "2020-01-01",
+        "height": 40,
+        "weight": 45,
+        "gender": "Laki-laki",
+        "updatedAt": "2024-06-02T15:41:58.163Z"
+    }
+}
+```
