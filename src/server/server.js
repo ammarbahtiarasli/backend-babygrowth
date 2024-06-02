@@ -2,6 +2,8 @@ require("dotenv").config()
 const Hapi = require("@hapi/hapi")
 const Jwt = require("@hapi/jwt")
 const authRoutes = require("../routes/authRoutes")
+const { verifyToken } = require("../services/jwt")
+const { firestore } = require("../services/firestore")
 
 const init = async () => {
     const server = Hapi.server({
@@ -14,7 +16,7 @@ const init = async () => {
 
     // Deklarasi strategi autentikasi
     server.auth.strategy("jwt", "jwt", {
-        keys: process.env.JWT_SECRET, // Menggunakan kunci rahasia dari variabel lingkungan
+        keys: process.env.JWT_SECRET,
         verify: {
             aud: false,
             iss: false,
@@ -24,13 +26,28 @@ const init = async () => {
             maxAgeSec: 14400,
             timeSkewSec: 15,
         },
-        validate: (artifacts, request, h) => {
-            return {
-                isValid: true,
-                credentials: { user: artifacts.decoded.payload.user },
+        validate: async (artifacts, request, h) => {
+            try {
+                const decoded = await verifyToken(artifacts.token); // Menunggu hasil verifikasi token
+                if (!decoded) {
+                    return { isValid: false };
+                }
+
+                const userSnapshot = await firestore
+                    .collection("users")
+                    .doc(decoded.payload.id)
+                    .get();
+                if (!userSnapshot.exists) {
+                    return { isValid: false };
+                }
+
+                return { isValid: true, credentials: { user: userSnapshot.data() } };
+            } catch (err) {
+                return { isValid: false };
             }
         },
-    })
+    });
+
 
     server.auth.default("jwt")
 
