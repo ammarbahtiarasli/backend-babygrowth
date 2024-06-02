@@ -181,17 +181,16 @@ const login = async (request, h) => {
             .code(401)
     }
 
-    const token = generateToken({ id: user.id })
+    const token = generateToken({ id: user.id, email: user.email})
 
     return h
         .response({
             status: "success",
             message: "User login success",
-            data: { token },
+            data: token,
         })
         .code(200)
 }
-
 
 // profile
 const profile = async (request, h) => {
@@ -222,7 +221,7 @@ const profile = async (request, h) => {
 const postProfile = async (request, h) => {
     const { name, birthday, height, weight, gender } = request.payload
 
-    const user = request.auth.credentials
+    const user = request.auth.credentials.user
     const id = user.id
     const updatedAt = new Date().toISOString()
 

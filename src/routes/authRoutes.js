@@ -20,17 +20,11 @@ const authRoutes = [
   {
     method: "GET",
     path: "/profile",
-    options: {
-        auth : "jwt"
-    },
     handler: authHandler.profile,
   },
   {
     method: "POST",
     path: "/profile",
-    options: {
-        auth : "jwt"
-    },
     handler: authHandler.postProfile,
   }
 ];

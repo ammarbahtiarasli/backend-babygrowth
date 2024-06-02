@@ -3,7 +3,7 @@ const Hapi = require("@hapi/hapi")
 const Jwt = require("@hapi/jwt")
 const authRoutes = require("../routes/authRoutes")
 const { verifyToken } = require("../services/jwt")
-const { firestore } = require("../services/firestore")
+const fs_users = require("../services/firestore")
 
 const init = async () => {
     const server = Hapi.server({
@@ -33,9 +33,9 @@ const init = async () => {
                     return { isValid: false };
                 }
 
-                const userSnapshot = await firestore
+                const userSnapshot = await fs_users
                     .collection("users")
-                    .doc(decoded.payload.id)
+                    .doc(artifacts.decoded.payload.id)
                     .get();
                 if (!userSnapshot.exists) {
                     return { isValid: false };

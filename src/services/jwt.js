@@ -11,7 +11,7 @@ const verifyToken = (token) => {
     try {
         return jwt.token.decode(token, { key: secretKey, algorithms: ["HS256"] })
     } catch (error) {
-        return error.message
+        return null
     }
 }
 
