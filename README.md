@@ -135,7 +135,7 @@ http://localhost:3000
 
 - Request Body
 
-`name` as `string`, must be unique
+`name` as `string`,
 
 `birthday` as `date`,
 

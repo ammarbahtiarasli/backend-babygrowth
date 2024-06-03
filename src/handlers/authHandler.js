@@ -75,74 +75,6 @@ const register = async (request, h) => {
         .code(201)
 }
 
-//login
-// const login = async (request, h) => {
-//     const { email, password } = request.payload
-
-//     if (!email || !password) {
-//         return h
-//             .response({
-//                 status: "fail",
-//                 message: "Email and password are required",
-//             })
-//             .code(400)
-//     }
-
-//     const userSnapshot = await fs_users
-//         .collection("users")
-//         .where("email", "==", email)
-//         .get()
-
-//     if (userSnapshot.empty) {
-//         return h
-//             .response({
-//                 status: "fail",
-//                 message: "User not found",
-//             })
-//             .code(401)
-//     }
-
-//     const user = userSnapshot.docs[0].data()
-
-//     if (user.password !== password) {
-//         // Simple password check, consider hashing passwords for better security
-//         return h
-//             .response({
-//                 status: "fail",
-//                 message: "Invalid email or password",
-//             })
-//             .code(401)
-//     }
-
-//     const token = generateToken({ id: user.id, email: user.email })
-
-//     const data = {
-//         id: user.id,
-//         username: user.username,
-//         email: user.email,
-//         name: user.name,
-//         birthday: user.birthday,
-//         height: user.height,
-//         weight: user.weight,
-//         gender: user.gender,
-//         createdAt: user.createdAt,
-//         updatedAt: user.updatedAt,
-//         token,
-//     }
-
-//     return h
-//         .response({
-//             status: "success",
-//             message: "User login success",
-//             data,
-//         })
-//         .code(200)
-// }
-
-
-
-
-
 const login = async (request, h) => {
     const { email, password } = request.payload
 
@@ -187,7 +119,7 @@ const login = async (request, h) => {
         .response({
             status: "success",
             message: "User login success",
-            data: token,
+            token: token,
         })
         .code(200)
 }
