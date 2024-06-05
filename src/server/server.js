@@ -2,8 +2,9 @@ require("dotenv").config()
 const Hapi = require("@hapi/hapi")
 const Jwt = require("@hapi/jwt")
 const authRoutes = require("../routes/authRoutes")
+const recipeRoutes = require("../routes/recipeRoutes")
 const { verifyToken } = require("../services/jwt")
-const fs_users = require("../services/firestore")
+const { firestore } = require("../services/firestore")
 
 const init = async () => {
     const server = Hapi.server({
@@ -38,7 +39,7 @@ const init = async () => {
                     return { isValid: false }
                 }
 
-                const userSnapshot = await fs_users
+                const userSnapshot = await firestore
                     .collection("users")
                     .doc(artifacts.decoded.payload.id)
                     .get()
@@ -53,11 +54,10 @@ const init = async () => {
         },
     })
 
-
     server.auth.default("jwt")
 
     // Register routes
-    server.route(authRoutes)
+    server.route([authRoutes, recipeRoutes])
 
     await server.start()
     console.log("Server running on %s", server.info.uri)

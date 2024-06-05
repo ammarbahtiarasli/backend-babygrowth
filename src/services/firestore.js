@@ -1,6 +1,6 @@
 const { Firestore } = require('@google-cloud/firestore')
 
-const fs_users = new Firestore({
+const firestore = new Firestore({
     projectId: process.env.GOOGLE_CLOUD_PROJECT,
     databaseId: "babygrowth"
 })
@@ -12,4 +12,4 @@ const fs_users = new Firestore({
 //     return predictCollection.doc(id).set(data)
 // }
 
-module.exports = fs_users
+module.exports = firestore
