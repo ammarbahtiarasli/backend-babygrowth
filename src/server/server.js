@@ -21,7 +21,7 @@ const init = async () => {
 
     // Deklarasi strategi autentikasi
     server.auth.strategy("jwt", "jwt", {
-        keys: process.env.JWT_SECRET,
+        keys: process.env.SECRET_KEY,
         verify: {
             aud: false,
             iss: false,

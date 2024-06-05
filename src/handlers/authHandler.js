@@ -113,13 +113,27 @@ const login = async (request, h) => {
             .code(401)
     }
 
-    const token = generateToken({ id: user.id, email: user.email})
+    const token = generateToken({ id: user.id, email: user.email })
+
+    const data = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        name: user.name,
+        birthday: user.birthday,
+        height: user.height,
+        weight: user.weight,
+        gender: user.gender,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        token,
+    }
 
     return h
         .response({
             status: "success",
             message: "User login success",
-            token: token,
+            data: data,
         })
         .code(200)
 }
