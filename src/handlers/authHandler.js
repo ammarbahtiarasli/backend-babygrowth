@@ -1,5 +1,5 @@
 const { generateToken } = require("../services/jwt")
-const fs_users = require("../services/firestore")
+const { firestore } = require("../services/firestore")
 const crypto = require("crypto")
 
 const register = async (request, h) => {
@@ -32,7 +32,7 @@ const register = async (request, h) => {
             .code(400)
     }
 
-    const userSnapshot = await fs_users
+    const userSnapshot = await firestore
         .collection("users")
         .where("email", "==", email)
         .get()
@@ -64,7 +64,7 @@ const register = async (request, h) => {
         updatedAt,
     }
 
-    await fs_users.collection("users").doc(id).set(data)
+    await firestore.collection("users").doc(id).set(data)
 
     return h
         .response({
@@ -87,7 +87,7 @@ const login = async (request, h) => {
             .code(400)
     }
 
-    const userSnapshot = await fs_users
+    const userSnapshot = await firestore
         .collection("users")
         .where("email", "==", email)
         .get()
@@ -180,7 +180,7 @@ const postProfile = async (request, h) => {
         updatedAt,
     }
 
-    await fs_users.collection("users").doc(id).update(data)
+    await firestore.collection("users").doc(id).update(data)
 
     return h
         .response({
