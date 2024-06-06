@@ -9,6 +9,11 @@ const recipeRoutes = [
     },
     {
         method: "GET",
+        path: "/recipe/",
+        handler: recipeHandler.getAllRecipe,
+    },
+    {
+        method: "GET",
         path: "/recipe/{id}",
         handler: recipeHandler.getRecipe,
     },

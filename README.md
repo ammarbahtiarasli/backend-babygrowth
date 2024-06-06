@@ -1,26 +1,24 @@
-# Babygrowth API
-
 REST API untuk mobile app babygrowth
 
 ## Endpoint
 
-http://localhost:3000/{url}
+Development : [http://localhost:3000/{url}](http://localhost:3000/{url})
 
-http://34.101.83.16:3000/{url}
-
-
+Production : [http://34.101.83.16:3000/{url}](http://34.101.83.16:3000/%7Burl%7D)
 
 ### Register
 
 - URL
 
+
 `/register`
 
 - Method
 
- `POST`
+    `POST`
 
 - Request Body
+
 
 `username` as `string`
 
@@ -30,7 +28,8 @@ http://34.101.83.16:3000/{url}
 
 - Response
 
-```json
+
+``` json
 {
    "status": "success",
     "message": "User created",
@@ -48,19 +47,22 @@ http://34.101.83.16:3000/{url}
         "updatedAt": "2024-05-31T10:08:52.381Z"
     }
 }
-```
+
+ ```
 
 ### Login
 
 - URL
 
+
 `/login`
 
 - Method
 
- `POST`
+    `POST`
 
 - Request Body
+
 
 `email` as `string`, must be unique
 
@@ -68,7 +70,8 @@ http://34.101.83.16:3000/{url}
 
 - Response
 
-```json
+
+``` json
 {
    "status": "success",
     "message": "User login",
@@ -86,27 +89,31 @@ http://34.101.83.16:3000/{url}
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxhbmFuZ0BnbWFpbC5jb20iLCJpYXQiOjE3MTcxNTAyMTJ9.86FXsM8MFOm_lZMbRHXBOJxrUJBNKL-hzkyAVFpUi5A"
     }
 }
-```
+
+ ```
 
 ### Profile
 
 - URL
 
+
 `/profile`
 
 - Method
 
- `GET`
+    `GET`
 
 - Request Body
 
+
 `none`
 
- use token JWT.
+use token JWT.
 
 - Response
 
-```json
+
+``` json
 {
    "status": "success",
     "message": "User Profile",
@@ -123,19 +130,22 @@ http://34.101.83.16:3000/{url}
         "updatedAt": "2024-05-31T10:08:52.381Z",
     }
 }
-```
+
+ ```
 
 ### Edit Profile
 
 - URL
 
+
 `/profile`
 
 - Method
 
- `POST`
+    `POST`
 
 - Request Body
+
 
 `name` as `string`,
 
@@ -149,7 +159,8 @@ http://34.101.83.16:3000/{url}
 
 - Response
 
-```json
+
+``` json
 {
     "status": "success",
     "message": "User profile updated",
@@ -162,4 +173,212 @@ http://34.101.83.16:3000/{url}
         "updatedAt": "2024-06-02T15:41:58.163Z"
     }
 }
-```
+
+ ```
+
+### Get All Recipes
+
+- URL
+
+
+`/recipe`
+
+- Method
+
+    `GET`
+
+- Request Body
+
+
+`none`
+
+use token JWT
+
+- Response
+
+
+``` json
+{
+    "status": "success",
+    "message": "All Recipes found",
+    "data": {
+        "0": {
+            "id": "R1",
+            "name": "Pure Ikan Ungu",
+            "image": "R2.png",
+            "kategori": 0,
+            "porsi": 1,
+            "langkah": [
+                {
+                    "step": 1,
+                    "deskripsi": "Kukus ikan, labu siam, tahu dan ubi ungu hingga matang"
+                },
+                {
+                    "step": 2,
+                    "deskripsi": "Lumat/blender semua bahan di atas"
+                },
+                {
+                    "step": 3,
+                    "deskripsi": "Tambahkan santan dan kaldu jamur"
+                },
+                {
+                    "step": 4,
+                    "deskripsi": "Tambahkan air, saring dan sajikan"
+                }
+            ],
+            "bahan": [
+                {
+                    "jumlah": "60",
+                    "nama_bahan": "Ikan Tuna",
+                    "id_bahan": "B21"
+                },
+                {
+                    "jumlah": "20",
+                    "nama_bahan": "Labu Siam",
+                    "id_bahan": "B14"
+                },
+                {
+                    "jumlah": "20",
+                    "nama_bahan": "Tahu",
+                    "id_bahan": "B13"
+                },
+                {
+                    "jumlah": "60",
+                    "nama_bahan": "Ubi Ungu",
+                    "id_bahan": "B22"
+                },
+                {
+                    "jumlah": "400",
+                    "nama_bahan": "Ayam",
+                    "id_bahan": "B23"
+                },
+                {
+                    "jumlah": "100g",
+                    "nama_bahan": "Ayam",
+                    "id_bahan": "B24"
+                },
+                {
+                    "jumlah": "100g",
+                    "nama_bahan": "Ayam",
+                    "id_bahan": "B18"
+                }
+            ],
+            "nutrisi": {
+                "kalori": 250,
+                "karbohidrat": 30,
+                "gula": 10,
+                "protein": 20,
+                "serat": 5,
+                "natrium": 300,
+                "lemak": 10
+            },
+            "createdAt": "2024-06-06T13:49:41.526Z",
+            "updatedAt": "2024-06-06T13:49:41.526Z"
+        },
+    }
+}
+
+ ```
+
+### Get Recipes by ID
+
+- URL
+
+
+`/recipe/{id}`
+
+- Method
+
+    `GET`
+
+- Request Body
+
+
+`none`
+
+use token JWT
+
+- Response
+
+
+``` json
+{
+    "status": "success",
+    "message": "Recipe found",
+    "data": {
+        "id": "R1",
+        "name": "Pure Ikan Ungu",
+        "image": "R2.png",
+        "kategori": 0,
+        "porsi": 1,
+        "langkah": [
+            {
+                "step": 1,
+                "deskripsi": "Kukus ikan, labu siam, tahu dan ubi ungu hingga matang"
+            },
+            {
+                "step": 2,
+                "deskripsi": "Lumat/blender semua bahan di atas"
+            },
+            {
+                "step": 3,
+                "deskripsi": "Tambahkan santan dan kaldu jamur"
+            },
+            {
+                "step": 4,
+                "deskripsi": "Tambahkan air, saring dan sajikan"
+            }
+        ],
+        "bahan": [
+            {
+                "jumlah": "60",
+                "nama_bahan": "Ikan Tuna",
+                "id_bahan": "B21"
+            },
+            {
+                "jumlah": "20",
+                "nama_bahan": "Labu Siam",
+                "id_bahan": "B14"
+            },
+            {
+                "jumlah": "20",
+                "nama_bahan": "Tahu",
+                "id_bahan": "B13"
+            },
+            {
+                "jumlah": "60",
+                "nama_bahan": "Ubi Ungu",
+                "id_bahan": "B22"
+            },
+            {
+                "jumlah": "400",
+                "nama_bahan": "Ayam",
+                "id_bahan": "B23"
+            },
+            {
+                "jumlah": "100g",
+                "nama_bahan": "Ayam",
+                "id_bahan": "B24"
+            },
+            {
+                "jumlah": "100g",
+                "nama_bahan": "Ayam",
+                "id_bahan": "B18"
+            }
+        ],
+        "nutrisi": {
+            "kalori": 250,
+            "karbohidrat": 30,
+            "gula": 10,
+            "protein": 20,
+            "serat": 5,
+            "natrium": 300,
+            "lemak": 10
+        },
+        "createdAt": "2024-06-06T13:49:41.526Z",
+        "updatedAt": "2024-06-06T13:49:41.526Z"
+    }
+}
+ ```
+
+ last updated : 06/06/2024
