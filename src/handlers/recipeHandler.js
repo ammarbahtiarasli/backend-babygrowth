@@ -1,5 +1,4 @@
-const storeData = require("../services/firestore")
-const { firestore } = require("../services/firestore")
+const { firestore, storeData } = require("../services/firestore")
 const crypto = require("crypto")
 
 const getAllRecipe = async (request, h) => {
@@ -55,20 +54,6 @@ const createRecipe = async (request, h) => {
                     "Name and Image are required",
             })
             .code(400)
-    }
-
-    const recipeSnapshot = await firestore
-        .collection("recipes")
-        .where("id", "==", id)
-        .get()
-
-    if (!recipeSnapshot.empty) {
-        return h
-            .response({
-                status: "fail",
-                message: "Recipe already exists",
-            })
-            .code(409)
     }
 
     const id = `R${crypto.randomUUID()}`
