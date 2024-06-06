@@ -8,7 +8,7 @@ const users = [
     birthday: "2000-01-01",
     height: 170,
     weight: 70,
-    gender: "Laki-laki",
+    gender: ["Laki-laki", "Perempuan"],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }

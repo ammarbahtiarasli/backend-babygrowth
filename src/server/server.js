@@ -2,13 +2,19 @@ require("dotenv").config()
 const Hapi = require("@hapi/hapi")
 const Jwt = require("@hapi/jwt")
 const authRoutes = require("../routes/authRoutes")
+const recipeRoutes = require("../routes/recipeRoutes")
 const { verifyToken } = require("../services/jwt")
-const fs_users = require("../services/firestore")
+const { firestore } = require("../services/firestore")
 
 const init = async () => {
     const server = Hapi.server({
-        port: 3000,
-        host: "localhost",
+        port: process.env.PORT || 3000,
+        host: process.env.HOST || "localhost",
+        routes: {
+            cors: {
+                origin: ["*"],
+            },
+        },
     })
 
     // Register plugin JWT
@@ -16,43 +22,42 @@ const init = async () => {
 
     // Deklarasi strategi autentikasi
     server.auth.strategy("jwt", "jwt", {
-        keys: process.env.JWT_SECRET,
+        keys: process.env.SECRET_KEY,
         verify: {
             aud: false,
             iss: false,
             sub: false,
             nbf: true,
             exp: true,
-            maxAgeSec: 14400,
+            maxAgeSec: 2592000, // 30 days
             timeSkewSec: 15,
         },
         validate: async (artifacts, request, h) => {
             try {
-                const decoded = await verifyToken(artifacts.token); // Menunggu hasil verifikasi token
+                const decoded = await verifyToken(artifacts.token) // Menunggu hasil verifikasi token
                 if (!decoded) {
-                    return { isValid: false };
+                    return { isValid: false }
                 }
 
-                const userSnapshot = await fs_users
+                const userSnapshot = await firestore
                     .collection("users")
                     .doc(artifacts.decoded.payload.id)
-                    .get();
+                    .get()
                 if (!userSnapshot.exists) {
-                    return { isValid: false };
+                    return { isValid: false }
                 }
 
-                return { isValid: true, credentials: { user: userSnapshot.data() } };
+                return { isValid: true, credentials: { user: userSnapshot.data() } }
             } catch (err) {
-                return { isValid: false };
+                return { isValid: false }
             }
         },
-    });
-
+    })
 
     server.auth.default("jwt")
 
-    // Register routes
-    server.route(authRoutes)
+    // routes
+    server.route([...authRoutes, ...recipeRoutes])
 
     await server.start()
     console.log("Server running on %s", server.info.uri)

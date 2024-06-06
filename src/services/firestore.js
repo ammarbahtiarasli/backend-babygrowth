@@ -1,15 +1,26 @@
 const { Firestore } = require('@google-cloud/firestore')
 
-const fs_users = new Firestore({
+const firestore = new Firestore({
     projectId: process.env.GOOGLE_CLOUD_PROJECT,
     databaseId: "babygrowth"
 })
 
-// async function storeData(id, data) {
-//     const db = new Firestore()
+async function storeData(collectionName, id, data) {
+    try {
+        // Validate collection name
+        if (collectionName !== 'users' && collectionName !== 'recipes') {
+            throw new Error("Invalid collection name. Must be 'users' or 'recipes'")
+        }
 
-//     const predictCollection = db.collection('users')
-//     return predictCollection.doc(id).set(data)
-// }
+        const collectionRef = firestore.collection(collectionName)
+        await collectionRef.doc(id).set(data)
 
-module.exports = fs_users
+        console.log(`Data successfully stored in collection '${collectionName}' with ID: ${id}`)
+    } catch (error) {
+        console.error(`Error storing data in collection '${collectionName}':`, error)
+        throw error // Re-throw for further error handling
+    }
+}
+
+
+module.exports = { firestore, storeData }

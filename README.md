@@ -4,7 +4,9 @@ REST API untuk mobile app babygrowth
 
 ## Endpoint
 
-http://localhost:3000
+http://localhost:3000/{url}
+
+http://34.101.83.16:3000/{url}
 
 
 
@@ -119,6 +121,45 @@ http://localhost:3000
         "gender": null,
         "createdAt": "2024-05-31T10:08:52.381Z",
         "updatedAt": "2024-05-31T10:08:52.381Z",
+    }
+}
+```
+
+### Edit Profile
+
+- URL
+
+`/profile`
+
+- Method
+
+ `POST`
+
+- Request Body
+
+`name` as `string`,
+
+`birthday` as `date`,
+
+`height` as `number`,
+
+`weight` as `number`,
+
+`gender` as `string`,
+
+- Response
+
+```json
+{
+    "status": "success",
+    "message": "User profile updated",
+    "data": {
+        "name": "ripan banget",
+        "birthday": "2020-01-01",
+        "height": 40,
+        "weight": 45,
+        "gender": "Laki-laki",
+        "updatedAt": "2024-06-02T15:41:58.163Z"
     }
 }
 ```
