@@ -23,4 +23,4 @@ async function storeData(collectionName, id, data) {
 }
 
 
-module.exports = storeData
+module.exports = { firestore, storeData }
