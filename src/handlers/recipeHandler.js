@@ -10,7 +10,21 @@ const getAllRecipe = async (request, h) => {
 
     return h.response({
         status: "success",
-        data,
+        message: "All Recipes found",
+        data: {
+            ...data.map((recipe) => ({
+                id: recipe.id,
+                name: recipe.name,
+                image: recipe.image,
+                kategori: recipe.kategori || 0, // Default value 0 if not provided
+                porsi: recipe.porsi || 1, // Default value 1 if not provided
+                langkah: recipe.steps || [], // Default empty array if not provided
+                bahan: recipe.ingredients || [], // Default empty array if not provided
+                nutrisi: recipe.nutrition || {}, // Default empty object if not provided
+                createdAt: recipe.createdAt,
+                updatedAt: recipe.updatedAt,
+            }))
+        },
     })
 }
 
@@ -40,8 +54,9 @@ const getRecipe = async (request, h) => {
     const data = recipe.data()
     return h.response({
         status: "success",
+        message: "Recipe found",
         data: {
-            id_resep: data.id,
+            id: data.id,
             name: data.name,
             image: data.image,
             kategori: data.kategori || 0, // Default value 0 if not provided
@@ -67,12 +82,14 @@ const createRecipe = async (request, h) => {
             .code(400)
     }
 
-    const id = `R${crypto.randomUUID()}`
+    const recipes = await firestore.collection("recipes").get()
+    const newId = `R${recipes.size + 1}`
+
     const createdAt = new Date().toISOString()
     const updatedAt = new Date().toISOString()
 
     const data = {
-        id,
+        id: newId,
         name,
         image,
         steps: steps || [], // Use provided steps or default to empty array
@@ -82,7 +99,7 @@ const createRecipe = async (request, h) => {
         updatedAt,
     }
 
-    await storeData("recipes", id, data)
+    await storeData("recipes", newId, data)
 
     return h.response({
         status: "success",
@@ -98,7 +115,7 @@ const deleteRecipe = async (request, h) => {
         return h
             .response({
                 status: "fail",
-                message: "Id is required",
+                message: "Id Recipe is required",
             })
             .code(400)
     }
