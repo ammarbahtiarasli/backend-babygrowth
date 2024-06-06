@@ -1,3 +1,4 @@
+const storeData = require("../services/firestore")
 const { firestore } = require("../services/firestore")
 const crypto = require("crypto")
 
@@ -44,16 +45,30 @@ const getRecipe = async (request, h) => {
 }
 
 const createRecipe = async (request, h) => {
-    const { name, image, kategori, porsi, langkah, bahan, nutrisi } = request.payload
+    const { name, image } = request.payload
 
-    if (!name || !image || !kategori || !porsi || !langkah || !bahan || !nutrisi) {
+    if (!name || !image) {
         return h
             .response({
                 status: "fail",
                 message:
-                    "Name, Image, Kategori, Porsi, Langkah, Bahan and Nutrisi are required",
+                    "Name and Image are required",
             })
             .code(400)
+    }
+
+    const recipeSnapshot = await firestore
+        .collection("recipes")
+        .where("id", "==", id)
+        .get()
+
+    if (!recipeSnapshot.empty) {
+        return h
+            .response({
+                status: "fail",
+                message: "Recipe already exists",
+            })
+            .code(409)
     }
 
     const id = `R${crypto.randomUUID()}`
@@ -64,16 +79,11 @@ const createRecipe = async (request, h) => {
         id,
         name,
         image,
-        kategori,
-        porsi,
-        langkah,
-        bahan,
-        nutrisi,
         createdAt,
         updatedAt,
     }
 
-    await firestore.collection("recipes").doc(id).set(data)
+    storeData("recipes", id, data)
 
     return h.response({
         status: "success",

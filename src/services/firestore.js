@@ -5,11 +5,22 @@ const firestore = new Firestore({
     databaseId: "babygrowth"
 })
 
-// async function storeData(id, data) {
-//     const db = new Firestore()
+async function storeData(collectionName, id, data) {
+    try {
+        // Validate collection name
+        if (collectionName !== 'users' && collectionName !== 'recipes') {
+            throw new Error("Invalid collection name. Must be 'users' or 'recipes'")
+        }
 
-//     const predictCollection = db.collection('users')
-//     return predictCollection.doc(id).set(data)
-// }
+        const collectionRef = firestore.collection(collectionName)
+        await collectionRef.doc(id).set(data)
 
-module.exports = firestore
+        console.log(`Data successfully stored in collection '${collectionName}' with ID: ${id}`)
+    } catch (error) {
+        console.error(`Error storing data in collection '${collectionName}':`, error)
+        throw error // Re-throw for further error handling
+    }
+}
+
+
+module.exports = storeData

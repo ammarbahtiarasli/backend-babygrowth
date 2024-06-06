@@ -1,6 +1,7 @@
 const { generateToken } = require("../services/jwt")
 const { firestore } = require("../services/firestore")
 const crypto = require("crypto")
+const storeData = require("../services/firestore")
 
 const register = async (request, h) => {
     const { username, email, password } = request.payload
@@ -64,7 +65,7 @@ const register = async (request, h) => {
         updatedAt,
     }
 
-    await firestore.collection("users").doc(id).set(data)
+    storeData("users", id, data)
 
     return h
         .response({
@@ -180,7 +181,7 @@ const postProfile = async (request, h) => {
         updatedAt,
     }
 
-    await firestore.collection("users").doc(id).update(data)
+    storeData("users", id, data)
 
     return h
         .response({

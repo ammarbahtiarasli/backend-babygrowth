@@ -16,6 +16,9 @@ const recipeRoutes = [
     {
         method: "POST",
         path: "/recipe",
+        options: {
+            auth: false
+        },
         handler: recipeHandler.createRecipe,
     },
     {

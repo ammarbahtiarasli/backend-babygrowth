@@ -56,8 +56,8 @@ const init = async () => {
 
     server.auth.default("jwt")
 
-    // Register routes
-    server.route([authRoutes, recipeRoutes])
+    // routes
+    server.route([...authRoutes, ...recipeRoutes])
 
     await server.start()
     console.log("Server running on %s", server.info.uri)
