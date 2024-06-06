@@ -1,31 +1,35 @@
 REST API untuk mobile app babygrowth
-Endpoint
-Development : http://localhost:3000/{url}
-Production : http://34.101.83.16:3000/{url}
-Register
-URL
 
-/register
-Method
-  POST
-Request Body
+## Endpoint
 
-username as string
-email as string, must be unique
-password as string, must be at least 8 characters
-Response
+Development : [http://localhost:3000/{url}](http://localhost:3000/{url})
+
+Production : [http://34.101.83.16:3000/{url}](http://34.101.83.16:3000/%7Burl%7D)
+
+### Register
+
+- URL
 
 
+`/register`
 
-JSON
+- Method
+
+    `POST`
+
+- Request Body
 
 
+`username` as `string`
+
+`email` as `string`, must be unique
+
+`password` as `string`, must be at least 8 characters
+
+- Response
 
 
-
-
-
-
+``` json
 {
    "status": "success",
     "message": "User created",
@@ -44,30 +48,30 @@ JSON
     }
 }
 
+ ```
 
-Login
-URL
+### Login
 
-/login
-Method
-  POST
-Request Body
-
-email as string, must be unique
-password as string, must be at least 8 characters
-Response
+- URL
 
 
+`/login`
 
-JSON
+- Method
+
+    `POST`
+
+- Request Body
 
 
+`email` as `string`, must be unique
+
+`password` as `string`, must be at least 8 characters
+
+- Response
 
 
-
-
-
-
+``` json
 {
    "status": "success",
     "message": "User login",
@@ -86,30 +90,30 @@ JSON
     }
 }
 
+ ```
 
-Profile
-URL
+### Profile
 
-/profile
-Method
-  GET
-Request Body
+- URL
 
-none
+
+`/profile`
+
+- Method
+
+    `GET`
+
+- Request Body
+
+
+`none`
+
 use token JWT.
-Response
+
+- Response
 
 
-
-JSON
-
-
-
-
-
-
-
-
+``` json
 {
    "status": "success",
     "message": "User Profile",
@@ -127,33 +131,36 @@ JSON
     }
 }
 
+ ```
 
-Edit Profile
-URL
+### Edit Profile
 
-/profile
-Method
-  POST
-Request Body
-
-name as string,
-birthday as date,
-height as number,
-weight as number,
-gender as string,
-Response
+- URL
 
 
+`/profile`
 
-JSON
+- Method
+
+    `POST`
+
+- Request Body
 
 
+`name` as `string`,
+
+`birthday` as `date`,
+
+`height` as `number`,
+
+`weight` as `number`,
+
+`gender` as `string`,
+
+- Response
 
 
-
-
-
-
+``` json
 {
     "status": "success",
     "message": "User profile updated",
@@ -167,30 +174,30 @@ JSON
     }
 }
 
+ ```
 
-Get All Recipes
-URL
+### Get All Recipes
 
-/recipe
-Method
-  GET
-Request Body
+- URL
 
-none
+
+`/recipe`
+
+- Method
+
+    `GET`
+
+- Request Body
+
+
+`none`
+
 use token JWT
-Response
+
+- Response
 
 
-
-JSON
-
-
-
-
-
-
-
-
+``` json
 {
     "status": "success",
     "message": "All Recipes found",
@@ -271,30 +278,30 @@ JSON
     }
 }
 
+ ```
 
-Get Recipes by ID
-URL
+### Get Recipes by ID
 
-/recipe/{id}
-Method
-  GET
-Request Body
+- URL
 
-none
+
+`/recipe/{id}`
+
+- Method
+
+    `GET`
+
+- Request Body
+
+
+`none`
+
 use token JWT
-Response
+
+- Response
 
 
-
-JSON
-
-
-
-
-
-
-
-
+``` json
 {
     "status": "success",
     "message": "Recipe found",
@@ -372,3 +379,4 @@ JSON
         "updatedAt": "2024-06-06T13:49:41.526Z"
     }
 }
+ ```
