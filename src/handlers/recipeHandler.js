@@ -5,26 +5,25 @@ const getAllRecipe = async (request, h) => {
     const recipes = await firestore.collection("recipes").get()
     const data = []
     recipes.forEach((doc) => {
-        data.push(doc.data())
+        const recipe = doc.data()
+        data.push({
+            id: recipe.id,
+            name: recipe.name,
+            image: recipe.image,
+            kategori: recipe.kategori || 0, // Default value 0 if not provided
+            porsi: recipe.porsi || 1, // Default value 1 if not provided
+            langkah: recipe.steps || [], // Default empty array if not provided
+            bahan: recipe.ingredients || [], // Default empty array if not provided
+            nutrisi: recipe.nutrition || {}, // Default empty object if not provided
+            createdAt: recipe.createdAt,
+            updatedAt: recipe.updatedAt,
+        })
     })
 
     return h.response({
         status: "success",
         message: "All Recipes found",
-        data: {
-            ...data.map((recipe) => ({
-                id: recipe.id,
-                name: recipe.name,
-                image: recipe.image,
-                kategori: recipe.kategori || 0, // Default value 0 if not provided
-                porsi: recipe.porsi || 1, // Default value 1 if not provided
-                langkah: recipe.steps || [], // Default empty array if not provided
-                bahan: recipe.ingredients || [], // Default empty array if not provided
-                nutrisi: recipe.nutrition || {}, // Default empty object if not provided
-                createdAt: recipe.createdAt,
-                updatedAt: recipe.updatedAt,
-            }))
-        },
+        data,
     })
 }
 

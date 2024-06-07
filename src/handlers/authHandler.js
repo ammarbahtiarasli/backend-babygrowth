@@ -1,7 +1,6 @@
 const { generateToken } = require("../services/jwt")
-const { firestore } = require("../services/firestore")
+const { firestore, storeData } = require("../services/firestore")
 const crypto = require("crypto")
-const storeData = require("../services/firestore")
 
 const register = async (request, h) => {
     const { username, email, password } = request.payload
@@ -105,7 +104,6 @@ const login = async (request, h) => {
     const user = userSnapshot.docs[0].data()
 
     if (user.password !== password) {
-
         return h
             .response({
                 status: "fail",
