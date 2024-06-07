@@ -23,4 +23,31 @@ async function storeData(collectionName, id, data) {
 }
 
 
-module.exports = { firestore, storeData }
+async function updateData(collectionName, id, data) {
+    try {
+        // Validate collection name (same as before)
+        if (collectionName !== 'users' && collectionName !== 'recipes') {
+            throw new Error("Invalid collection name. Must be 'users' or 'recipes'")
+        }
+
+        const collectionRef = firestore.collection(collectionName)
+        const docRef = collectionRef.doc(id)
+
+        // Check if the document exists
+        const docSnapshot = await docRef.get()
+        if (!docSnapshot.exists) {
+            throw new Error(`Document with ID ${id} does not exist in collection '${collectionName}'`)
+        }
+
+        // Update the document
+        await docRef.update(data)
+
+        console.log(`Data successfully updated in collection '${collectionName}' with ID: ${id}`)
+    } catch (error) {
+        console.error(`Error updating data in collection '${collectionName}':`, error)
+        throw error // Re-throw for further error handling
+    }
+}
+
+
+module.exports = { firestore, storeData, updateData }

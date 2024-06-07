@@ -1,5 +1,4 @@
 const { firestore, storeData } = require("../services/firestore")
-const crypto = require("crypto")
 
 const getAllRecipe = async (request, h) => {
     const recipes = await firestore.collection("recipes").get()

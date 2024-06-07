@@ -1,5 +1,5 @@
 const { generateToken } = require("../services/jwt")
-const { firestore, storeData } = require("../services/firestore")
+const { firestore, storeData, updateData } = require("../services/firestore")
 const crypto = require("crypto")
 
 const register = async (request, h) => {
@@ -179,7 +179,7 @@ const postProfile = async (request, h) => {
         updatedAt,
     }
 
-    storeData("users", id, data)
+    updateData("users", id, data)
 
     return h
         .response({
