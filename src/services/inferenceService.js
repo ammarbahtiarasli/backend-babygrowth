@@ -1,47 +1,44 @@
 const tf = require('@tensorflow/tfjs-node')
 
-const predictTextureClassification = async (model, image) => {
-    // Pra-pemrosesan gambar (sama seperti sebelumnya)
+async function predictTexture(model, image) {
     const tensor = tf.node
         .decodeJpeg(image)
         .resizeNearestNeighbor([224, 224])
         .expandDims()
         .toFloat()
 
-    // Prediksi dengan model
     const prediction = model.predict(tensor)
+    const score = await prediction.data()
+    const confidenceScore = Math.max(...score) * 100
 
-    // Ambil semua skor prediksi (bukan hanya satu)
-    const scoreArray = await prediction.data()
+    const classes = ['Bukan Makanan', 'Kasar', 'Lumat', 'Lunak']
 
-    // Indeks kelas dengan skor tertinggi
-    const maxIndex = scoreArray.indexOf(Math.max(...scoreArray))
+    const classResult = tf.argMax(prediction, 1).dataSync()[0]
+    const label = classes[classResult]
 
-    // Label tekstur berdasarkan indeks
-    const labels = ['Bukan Makanan', 'Kasar', 'Lumat', 'Lunak']
-    const label = labels[maxIndex]
+    let explanation, suggestion
 
-    // Skor kepercayaan (dalam persen)
-    const confidenceScore = scoreArray[maxIndex] * 100
-
-    // Saran (opsional)
-    let suggestion = ""
-    switch (label) {
-        case 'Bukan Makanan':
-            suggestion = "Ini bukan makanan. Coba masukkan gambar makanan."
-            break
-        case 'Kasar':
-            suggestion = "Tekstur makanan ini kasar."
-            break
-        case 'Lumat':
-            suggestion = "Tekstur makanan ini lumat."
-            break
-        case 'Lunak':
-            suggestion = "Tekstur makanan ini lunak."
-            break
+    if (label === 'Bukan Makanan') {
+        explanation = "Gambar yang Anda masukkan bukan makanan."
+        suggestion = "Silakan masukkan gambar makanan yang benar."
     }
 
-    return { confidenceScore, label, suggestion }
+    if (label === 'Kasar') {
+        explanation = "Makanan yang Anda masukkan memiliki tekstur kasar."
+        suggestion = "tidak disarankan untuk dikonsumsi oleh anak-anak."
+    }
+
+    if (label === 'Lumat') {
+        explanation = "Makanan yang Anda masukkan memiliki tekstur lumat."
+        suggestion = "disarankan untuk dikonsumsi oleh anak-anak."
+    }
+
+    if (label === 'Lunak') {
+        explanation = "Makanan yang Anda masukkan memiliki tekstur lunak."
+        suggestion = "disarankan untuk dikonsumsi oleh anak-anak."
+    }
+
+    return { confidenceScore, label, explanation, suggestion }
 }
 
-module.exports = { predictTextureClassification }
+module.exports = predictTexture

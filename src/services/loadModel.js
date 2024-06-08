@@ -1,5 +1,5 @@
 const tf = require('@tensorflow/tfjs-node')
-
-const loadModel = async () => tf.loadGraphModel(process.env.MODEL_URL)
-
+async function loadModel() {
+    return tf.loadLayersModel(process.env.MODEL_URL)
+}
 module.exports = loadModel

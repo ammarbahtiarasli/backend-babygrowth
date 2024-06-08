@@ -18,9 +18,39 @@ async function storeData(collectionName, id, data) {
         console.log(`Data successfully stored in collection '${collectionName}' with ID: ${id}`)
     } catch (error) {
         console.error(`Error storing data in collection '${collectionName}':`, error)
+        throw error
+    }
+}
+
+async function storePredict(id, data) {
+    const predictCollection = firestore.collection('predictions')
+    return predictCollection.doc(id).set(data)
+}
+
+async function updateData(collectionName, id, data) {
+    try {
+        // Validate collection name (same as before)
+        if (collectionName !== 'users' && collectionName !== 'recipes') {
+            throw new Error("Invalid collection name. Must be 'users' or 'recipes'")
+        }
+
+        const collectionRef = firestore.collection(collectionName)
+        const docRef = collectionRef.doc(id)
+
+        // Check if the document exists
+        const docSnapshot = await docRef.get()
+        if (!docSnapshot.exists) {
+            throw new Error(`Document with ID ${id} does not exist in collection '${collectionName}'`)
+        }
+
+        // Update the document
+        await docRef.update(data)
+
+        console.log(`Data successfully updated in collection '${collectionName}' with ID: ${id}`)
+    } catch (error) {
+        console.error(`Error updating data in collection '${collectionName}':`, error)
         throw error // Re-throw for further error handling
     }
 }
 
-
-module.exports = { firestore, storeData }
+module.exports = { firestore, storeData, storePredict, updateData }
