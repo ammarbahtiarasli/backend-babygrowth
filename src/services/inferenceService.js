@@ -1,6 +1,6 @@
 const tf = require('@tensorflow/tfjs-node')
 
-const predictTextureClassification = async (model, image) => {
+const predictTexture = async (model, image) => {
     // Pra-pemrosesan gambar (sama seperti sebelumnya)
     const tensor = tf.node
         .decodeJpeg(image)
@@ -44,4 +44,4 @@ const predictTextureClassification = async (model, image) => {
     return { confidenceScore, label, suggestion }
 }
 
-module.exports = { predictTextureClassification }
+module.exports = predictTexture
