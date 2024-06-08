@@ -1,4 +1,4 @@
-const { firestore, storeData } = require("../services/firestore")
+const { storePredict } = require("../services/firestore")
 const crypto = require("crypto")
 const predictTexture = require("../services/inferenceService")
 
@@ -13,9 +13,10 @@ const postPredict = async (request, h) => {
     const data = {
         id: id,
         label,
-        confidenceScore,
         suggestion,
     }
+
+    await storePredict(id, data)
 
     return h.response({
         status: "success",

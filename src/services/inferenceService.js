@@ -25,17 +25,17 @@ async function predictTexture(model, image) {
 
     if (label === 'Kasar') {
         explanation = "Makanan yang Anda masukkan memiliki tekstur kasar."
-        suggestion = "."
+        suggestion = "tidak disarankan untuk dikonsumsi oleh anak-anak."
     }
 
     if (label === 'Lumat') {
         explanation = "Makanan yang Anda masukkan memiliki tekstur lumat."
-        suggestion = "."
+        suggestion = "disarankan untuk dikonsumsi oleh anak-anak."
     }
 
     if (label === 'Lunak') {
         explanation = "Makanan yang Anda masukkan memiliki tekstur lunak."
-        suggestion = "."
+        suggestion = "disarankan untuk dikonsumsi oleh anak-anak."
     }
 
     return { confidenceScore, label, explanation, suggestion }

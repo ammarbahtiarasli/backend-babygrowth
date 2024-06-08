@@ -18,10 +18,14 @@ async function storeData(collectionName, id, data) {
         console.log(`Data successfully stored in collection '${collectionName}' with ID: ${id}`)
     } catch (error) {
         console.error(`Error storing data in collection '${collectionName}':`, error)
-        throw error // Re-throw for further error handling
+        throw error
     }
 }
 
+async function storePredict(id, data) {
+    const predictCollection = firestore.collection('predictions')
+    return predictCollection.doc(id).set(data)
+}
 
 async function updateData(collectionName, id, data) {
     try {
@@ -49,5 +53,4 @@ async function updateData(collectionName, id, data) {
     }
 }
 
-
-module.exports = { firestore, storeData, updateData }
+module.exports = { firestore, storeData, storePredict, updateData }
