@@ -4,6 +4,7 @@ const { predictTexture } = require("../services/inferenceService")
 
 const postPredict = async (request, h) => {
     const { image } = request.payload
+    const { model } = request.server.app
 
     // Memprediksi tekstur
     const { confidenceScore, label, suggestion } = await predictTexture(model, image)
@@ -18,7 +19,7 @@ const postPredict = async (request, h) => {
 
     return h.response({
         status: "success",
-        message: "Gambar telah diprediksi.",
+        message: confidenceScore > 99 ? 'Model is predicted successfully.' : 'Model is predicted successfully but under threshold. Please use the correct picture',
         data: data
     }).code(200)
 }

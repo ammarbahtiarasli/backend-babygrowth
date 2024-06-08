@@ -3,8 +3,10 @@ const Hapi = require("@hapi/hapi")
 const Jwt = require("@hapi/jwt")
 const authRoutes = require("../routes/authRoutes")
 const recipeRoutes = require("../routes/recipeRoutes")
+const predictRoutes = require("../routes/predictRoutes")
 const { verifyToken } = require("../services/jwt")
 const { firestore } = require("../services/firestore")
+const loadModel = require("../services/loadModel")
 
 const init = async () => {
     const server = Hapi.server({
@@ -55,6 +57,9 @@ const init = async () => {
     })
 
     server.auth.default("jwt")
+
+    const model = await loadModel()
+    server.app.model = model
 
     // routes
     server.route([...authRoutes, ...recipeRoutes, ...predictRoutes])

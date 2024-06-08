@@ -2,12 +2,16 @@ const predictHandler = require("../handlers/predictHandler")
 
 const predictRoutes = [
     {
-        method: "GET",
+        method: "POST",
         path: "/predict",
+        handler: predictHandler.postPredict,
         options: {
             auth: false,
-        },
-        handler: predictHandler.postPredict,
+            payload: {
+                allow: 'multipart/form-data',
+                multipart: true
+            }
+        }
     },
 ]
 
