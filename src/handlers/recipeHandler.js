@@ -68,6 +68,70 @@ const getRecipe = async (request, h) => {
     })
 }
 
+const getRecipeByName = async (request, h) => {
+    const { name } = request.params
+
+    if (!name) {
+        return h
+            .response({
+                status: "fail",
+                message: "Search query (name) is required", // Clarify the error message
+            })
+            .code(400)
+    }
+
+    // 1. Search Query
+    const recipesRef = firestore.collection("recipes")
+    const query = recipesRef.where("name", ">=", name).where("name", "<=", name + "\uf8ff") // Firestore range query for partial matches
+
+    try {
+        // 2. Execute Query
+        const snapshot = await query.get()
+
+        // 3. Handle Results
+        if (snapshot.empty) {
+            return h
+                .response({
+                    status: "fail",
+                    message: "No recipes found matching the query",
+                })
+                .code(404)
+        }
+
+        const data = []
+        snapshot.forEach((doc) => {
+            const recipeData = doc.data()
+            data.push({
+                id: doc.id,
+                name: recipeData.name,
+                image: recipeData.image,
+                kategori: recipeData.kategori || 0,
+                porsi: recipeData.porsi || 1,
+                langkah: recipeData.steps || [],
+                bahan: recipeData.ingredients || [],
+                nutrisi: recipeData.nutrition || {},
+                createdAt: recipeData.createdAt,
+                updatedAt: recipeData.updatedAt,
+            })
+        })
+
+        return h.response({
+            status: "success",
+            message: "Recipes found",
+            data: data, // Return an array of results
+        })
+    } catch (error) {
+        // 4. Error Handling
+        console.error("Error fetching recipes:", error)
+        return h
+            .response({
+                status: "error",
+                message: "Internal server error",
+            })
+            .code(500)
+    }
+}
+
 const createRecipe = async (request, h) => {
     const { name, image, steps, ingredients, nutrition } = request.payload
 
@@ -126,4 +190,4 @@ const deleteRecipe = async (request, h) => {
     })
 }
 
-module.exports = { getAllRecipe, getRecipe, createRecipe, deleteRecipe }
+module.exports = { getAllRecipe, getRecipe, getRecipeByName, createRecipe, deleteRecipe }
