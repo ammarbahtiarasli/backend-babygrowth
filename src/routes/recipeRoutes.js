@@ -17,6 +17,11 @@ const recipeRoutes = [
         path: "/recipe/{id}",
         handler: recipeHandler.getRecipe,
     },
+    {
+        method: "GET",
+        path: "/recipe/{name}",
+        handler: recipeHandler.getRecipebyName,
+    },
     // kebutuhan internal
     {
         method: "POST",
