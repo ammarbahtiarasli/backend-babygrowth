@@ -1,18 +1,17 @@
-const predictHandler = require("../handlers/predictHandler")
+const postPredict = require("../handlers/predictHandler")
 
 const predictRoutes = [
     {
         method: "POST",
         path: "/predict",
-        handler: predictHandler.postPredict,
+        handler: postPredict,
         options: {
-            auth: false,
             payload: {
                 allow: 'multipart/form-data',
                 multipart: true
             }
         }
-    },
+    }
 ]
 
 module.exports = predictRoutes

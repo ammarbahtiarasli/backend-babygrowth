@@ -1,6 +1,6 @@
 const { firestore, storeData } = require("../services/firestore")
 const crypto = require("crypto")
-const { predictTexture } = require("../services/inferenceService")
+const predictTexture = require("../services/inferenceService")
 
 const postPredict = async (request, h) => {
     const { image } = request.payload

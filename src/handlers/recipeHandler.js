@@ -68,47 +68,47 @@ const getRecipe = async (request, h) => {
     })
 }
 
-const getRecipeByName = async (request, h) => {
-    const { name } = request.params
+// const getRecipeByName = async (request, h) => {
+//     const { name } = request.params
 
-    if (!name) {
-        return h
-            .response({
-                status: "fail",
-                message: "Name is required",
-            })
-            .code(400)
-    }
+//     if (!name) {
+//         return h
+//             .response({
+//                 status: "fail",
+//                 message: "Name is required",
+//             })
+//             .code(400)
+//     }
 
-    const recipe = await firestore.collection("recipes").doc(name).get()
+//     const recipe = await firestore.collection("recipes").doc(name).get()
 
-    if (!recipe.exists) {
-        return h
-            .response({
-                status: "fail",
-                message: "Recipe not found",
-            })
-            .code(404)
-    }
+//     if (!recipe.exists) {
+//         return h
+//             .response({
+//                 status: "fail",
+//                 message: "Recipe not found",
+//             })
+//             .code(404)
+//     }
 
-    const data = recipe.data()
-    return h.response({
-        status: "success",
-        message: "Recipe found",
-        data: {
-            id: data.id,
-            name: data.name,
-            image: data.image,
-            kategori: data.kategori || 0, // Default value 0 if not provided
-            porsi: data.porsi || 1, // Default value 1 if not provided
-            langkah: data.steps || [], // Default empty array if not provided
-            bahan: data.ingredients || [], // Default empty array if not provided
-            nutrisi: data.nutrition || {}, // Default empty object if not provided
-            createdAt: data.createdAt,
-            updatedAt: data.updatedAt,
-        },
-    })
-}
+//     const data = recipe.data()
+//     return h.response({
+//         status: "success",
+//         message: "Recipe found",
+//         data: {
+//             id: data.id,
+//             name: data.name,
+//             image: data.image,
+//             kategori: data.kategori || 0, // Default value 0 if not provided
+//             porsi: data.porsi || 1, // Default value 1 if not provided
+//             langkah: data.steps || [], // Default empty array if not provided
+//             bahan: data.ingredients || [], // Default empty array if not provided
+//             nutrisi: data.nutrition || {}, // Default empty object if not provided
+//             createdAt: data.createdAt,
+//             updatedAt: data.updatedAt,
+//         },
+//     })
+// }
 
 const createRecipe = async (request, h) => {
     const { name, image, steps, ingredients, nutrition } = request.payload
@@ -168,4 +168,4 @@ const deleteRecipe = async (request, h) => {
     })
 }
 
-module.exports = { getAllRecipe, getRecipe, getRecipeByName, createRecipe, deleteRecipe }
+module.exports = { getAllRecipe, getRecipe, createRecipe, deleteRecipe }
