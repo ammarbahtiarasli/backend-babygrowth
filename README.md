@@ -1,3 +1,5 @@
+![BabyGrowth](https://storage.googleapis.com/babygrowth-bucket/logo.png)
+
 # Babygrowth API
 
 REST API untuk Android Mobile App babygrowth
