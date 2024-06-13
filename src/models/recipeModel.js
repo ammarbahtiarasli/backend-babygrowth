@@ -23,17 +23,20 @@ const recipe = [
             {
                 id_bahan: "B1",
                 nama_bahan: "Singkong",
-                jumlah: "200g"
+                jumlah: "200",
+                satuan: "gram"
             },
             {
                 id_bahan: "B2",
                 nama_bahan: "Ikan",
-                jumlah: "100g"
+                jumlah: "100",
+                satuan: "gram"
             },
             {
                 id_bahan: "B3",
                 nama_bahan: "Ayam",
-                jumlah: "100g"
+                jumlah: "100",
+                satuan: "gram"
             }
         ],
         nutrisi: {
@@ -43,7 +46,6 @@ const recipe = [
             karbohidrat: 30,
             serat: 5,
             gula: 10,
-            natrium: 300
         },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
