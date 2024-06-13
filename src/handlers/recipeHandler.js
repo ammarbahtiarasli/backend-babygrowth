@@ -1,4 +1,6 @@
 const { firestore, storeData } = require("../services/firestore")
+// const fs = require('fs')
+// const path = require('path')
 
 const getAllRecipe = async (request, h) => {
     const recipes = await firestore.collection("recipes").get()
@@ -133,13 +135,13 @@ const getRecipeByName = async (request, h) => {
 }
 
 const createRecipe = async (request, h) => {
-    const { name, image, steps, ingredients, nutrition } = request.payload
+    const { name, image, kategori, porsi, steps, ingredients, nutrition } = request.payload
 
-    if (!name || !image || !steps || !ingredients || !nutrition) {
+    if (!name || !image || !kategori || !porsi || !steps || !ingredients || !nutrition) {
         return h
             .response({
                 status: "fail",
-                message: "Name, image, steps, ingredients, and nutrition are required",
+                message: "Name, image, kategori, porsi, steps, ingredients, and nutrition are required",
             })
             .code(400)
     }
@@ -154,9 +156,11 @@ const createRecipe = async (request, h) => {
         id: newId,
         name,
         image,
-        steps: steps || [], // Use provided steps or default to empty array
-        ingredients: ingredients || [], // Use provided ingredients or default to empty array
-        nutrition: nutrition || {}, // Use provided nutrition or default to empty object
+        kategori,
+        porsi,
+        steps,
+        ingredients,
+        nutrition,
         createdAt,
         updatedAt,
     }
@@ -169,6 +173,17 @@ const createRecipe = async (request, h) => {
         data,
     })
 }
+
+// const insertRecipes = async () => {
+//     const filePath = path.join(__dirname, 'recipe.json')
+//     const rawData = fs.readFileSync(filePath)
+//     const recipesData = JSON.parse(rawData)
+
+//     for (const recipe of recipesData) {
+//         await createRecipe(recipe)
+//     }
+// }
+// insertRecipes().catch(console.error)
 
 const deleteRecipe = async (request, h) => {
     const { id } = request.params
